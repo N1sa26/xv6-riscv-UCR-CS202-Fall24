@@ -91,3 +91,49 @@ sys_uptime(void)
   release(&tickslock);
   return xticks;
 }
+
+//Depending on the value, it returns different information
+//(1) A count of the processes in the system;
+//(2) A count of the total number of system calls that the current process has made so far;
+//(3) The number of memory pages the current process is using.
+uint64
+sys_info(void)
+{
+  int param;
+  argint(0,&param);
+  
+  uint proc_count = 0;
+  uint syscall_num;
+  uint mem_page;
+  
+  struct proc *current_p = myproc();
+  struct proc *p;
+
+  if(param == 1)
+  {
+    for(p = proc; p < &proc[NPROC];p++){
+      if((p->state == SLEEPING) || (p->state == RUNNABLE ) || (p->state == RUNNING)){
+      proc_count ++;
+      }
+    }
+    printf("Total number of processes: %d\n",proc_count);
+    return 0;
+  }
+  else if(param == 2)
+  {
+    syscall_num = current_p->syscall_count;
+    printf("Total number of system calls made by current process: %d\n",syscall_num);
+    return 0;
+  }
+  else if(param ==3)
+  {
+    uint mem_size = current_p->sz;
+    mem_page = mem_size / PGSIZE;
+    printf("Total number of memory pages used by current process: %d\n",mem_page);
+    return 0;
+  }
+  else
+  {
+    return -1;
+  }
+}

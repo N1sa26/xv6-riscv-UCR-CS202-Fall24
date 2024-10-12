@@ -241,6 +241,7 @@ userinit(void)
   // and data into it.
   uvmfirst(p->pagetable, initcode, sizeof(initcode));
   p->sz = PGSIZE;
+  p->syscall_count = 0; //init syscall_count
 
   // prepare for the very first "return" from kernel to user.
   p->trapframe->epc = 0;      // user program counter
