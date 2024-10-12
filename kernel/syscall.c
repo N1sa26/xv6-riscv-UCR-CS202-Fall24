@@ -140,6 +140,10 @@ syscall(void)
   if(num > 0 && num < NELEM(syscalls) && syscalls[num]) {
     // Use num to lookup the system call function for num, call it,
     // and store its return value in p->trapframe->a0
+
+    // if(p->pid == 3){
+    //  printf("Num of syscall is %d\n",num);
+    // }
     p->syscall_count ++;
     p->trapframe->a0 = syscalls[num]();
   } else {

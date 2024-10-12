@@ -113,7 +113,7 @@ sys_info(void)
   {
     for(p = proc; p < &proc[NPROC];p++){
       if((p->state == SLEEPING) || (p->state == RUNNABLE ) || (p->state == RUNNING)){
-      proc_count ++;
+        proc_count ++;
       }
     }
     printf("Total number of processes: %d\n",proc_count);
