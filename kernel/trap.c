@@ -127,7 +127,7 @@ usertrapret(void)
   // and switches to user mode with sret.
   uint64 trampoline_userret = TRAMPOLINE + (userret - trampoline);
   // TODO: modify this function call so that it can work properly
-  ((void (*)(uint64))trampoline_userret)(satp);
+  ((void (*)(uint64, uint64))trampoline_userret)(TRAPFRAME - PGSIZE * p->thread_id, satp);
 }
 
 // interrupts and exceptions from kernel code go here via kernelvec,
