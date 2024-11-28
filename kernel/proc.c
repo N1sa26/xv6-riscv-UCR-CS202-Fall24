@@ -256,10 +256,12 @@ freeproc(struct proc *p)
   if(p->trapframe)
     kfree((void*)p->trapframe);
   p->trapframe = 0;
-  if(p->pagetable != 0 && p->thread_id != 0){
-    thread_freepagetable(p->pagetable, p->thread_id, p->kstack);
-  }else if(p->thread_id == 0)
-    proc_freepagetable(p->pagetable, p->sz);
+  if(p->pagetable){
+    if(p->thread_id != 0){
+      thread_freepagetable(p->pagetable, p->thread_id, p->kstack);
+    }else if(p->thread_id == 0)
+      proc_freepagetable(p->pagetable, p->sz);
+  }
   p->pagetable = 0;
   p->sz = 0;
   p->pid = 0;
